@@ -1,0 +1,87 @@
+<html lang="en">
+<head>
+	<meta name="robots" content="noindex">
+<meta name="googlebot" content="noindex" />
+	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<title>cCloud TV BETA</title>
+	 <link rel="stylesheet" href="/stuff/style/clouddvrtest2.css" media="screen" type="text/css" />
+
+<link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/4.12/video.js"></script>
+	 <script src="stuff/script/cloud.js"></script>
+<script src="stuff/script/cloud2.js"></script>
+</head>
+
+<body>
+<div class="table-title">
+<div class="vlcframe">
+		<object class="vlcplayer">
+			  <embed name="wmode" value="transparent"
+				type="application/x-vlc-plugin" 
+				pluginspage="http://www.videolan.org" 
+				version="VideoLAN.VLCPlugin.2"
+				height="420px"
+				width="100%"
+				id="vlc">
+			  </embed>
+			</object>
+<script type="text/javascript">
+function playVlcUrl() {
+
+var vlc = getPlayer("vlc");
+var url = document.getElementById("vlclink").value;
+//
+// alert(data2[no].streamurl);
+// https://wiki.videolan.org/Documentation:WebPlugin/
+//vlc.video.logo = data2[no].channellogo;
+if (url != "") {
+vlc.playlist.items.clear();
+vlc.playlist.add(url, "live");
+vlc.playlist.play();
+} else {
+alert("No url !");
+}
+}
+function getPlayer(name) {
+
+var player;
+
+if (window.document[name])
+{
+player = window.document[name];
+}
+if (navigator.appName.indexOf("Microsoft Internet")==-1)
+{
+if (document.embeds && document.embeds[name])
+player = document.embeds[name];
+}
+else // if (navigator.appName.indexOf("Microsoft Internet")!=-1)
+{
+player = document.getElementById(name);
+}
+return player;
+}
+
+
+</script>
+</body>
+
+<table class="table-fill">
+<thead>
+<thead>
+<tr>
+
+<th class="text-left"><input type='search' id="vlclink" onclick='javascript:playVlcUrl();' placeholder='Paste link here' autofocus></th>
+</tr>
+<tbody class="table-hover">
+<tr>
+<td style="cursor: pointer;" onclick="userSubmit()" class="text-center">Stream</td>
+</tr>
+</tbody>
+</table>
+  
+
+
+  </body>

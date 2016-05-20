@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>cCloud TV</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'/>
+    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,900,400italic|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" href="./images/favicon.png">
+    <script type='text/javascript' src='./files/t.js'></script>
+    <script type='text/javascript' src='./files/s.js'></script>
+	<script>
+		function dim(bool)
+		{
+			if (typeof bool=='undefined') bool=true; // so you can shorten dim(true) to dim()
+			document.getElementById('dimmer').style.display=(bool?'block':'none');
+		} 
+	</script>
+  <style>
+    #Pagination {border-top: 4px solid #CCF4FF; margin: 5px 0px; padding-top: 5px; display: inline-block;}
+    #Pagination a {cursor: pointer;}
+    .no-pag {color: #acacac; border: none;}
+    .no-pag:hover {color: #acacac;}
+    input {border: none; border-bottom: 1px solid #333;margin: 10px 0px; width: 90%; font-size: 16px; padding-bottom: 6px;}
+    .tHeader {padding: 2px; cursor: pointer; text-align: center;}
+    .photo {display: inline-block; float: left; width: 50px; height: auto}
+    #photogrid {overflow: auto;}
+	.container {margin: 0 auto; overflow: auto; padding-top:225px;}
+	h3 {padding-top: 18px;}
+	h1 {font-size: 36px;}
+
+	table {border-spacing: 0;}
+	tbody tr:nth-child(odd) {background-color: #f3f3f3;}
+	thead {text-align: center; font-family: Source Sans Pro, Arial, sans-serif;}
+	td {min-width: 40px; width: 200px; vertical-align: middle; text-align: center; padding: 4px;}
+	td a {line-height: 24px;}
+	tr {height: 50px;}
+	tr:hover td {
+		background:#F3F5B3;
+		cursor: url(http://cur.cursors-4u.net/symbols/sym-1/sym57.cur), progress !important;
+	}
+	
+	
+	ul, ol {text-indent: 0; margin: 0; padding-left: 20px;}
+	ul li {padding-bottom: 6px; line-height: 22px;}
+
+	footer {padding-top: 20px; margin-top: 60px; border-top: 4px solid #CCF4FF;  -webkit-column-count: 6; column-count: 6; -webkit-column-gap: 20px; column-gap: 20px; -moz-column-count: 6; -moz-column-gap: 20px; height: 125px;}
+	footer ul {list-style: none; padding-left: 0px; font-family: Source Sans Pro, Baskerville, Georgia, serif;}
+	footer li {line-height: inherit; font-size: 12px;}
+	footer h4 {font-size: 14px; -webkit-column-break-before: always; break-before: always; -moz-column-break-before: always; }
+	footer h4 {margin-top: 0px;}
+	footer a {border: none;}
+
+	.half {max-width: 50%; display: inline-block; vertical-align: top;}
+	.half:nth-child(odd) {padding-left: 20px;}
+
+	/* older css */
+
+	h1, h2, h3, h4, h5, h6 {font-family: Source Sans Pro, Arial, sans-serif;}
+	h2 {margin-top: 40px;}
+
+	//img {width: 100%;}
+	hr {border: 2px solid #CCF4FF;}
+
+	p a, a {color: #535353; text-decoration: none; padding-bottom: 0px; border-bottom: 2px #CCF4FF solid;}
+	a:hover {color: #47CCFC; background: #F8F8F8;}
+	a:active {color: #47CCFC; background: #636363;}
+	small {padding: 10px 0px;}
+	p, ol {line-height: 1.4;}
+	text {font-size: 12px;}
+
+	body.index p:nth-of-type(2) {font-size: 30px;}
+	body.index table {border: 4px solid #CCF4FF; padding: 18px;}
+	.home-link {color: #47CCFC;}
+
+	pre {word-wrap: break-word; padding: 10px; background: #F8F8F8;}
+	pre code {padding: 0;}
+	code {font-family: "Source Code Pro", monospace; font-size: 14px; line-height: 1; background: #F8F8F8; color: #636363; font-weight: 400; padding: 2px 6px; border-radius: 2px;}
+	.hljs { background: #F8F8F8; color: #494949; line-height: 1.4em; }
+
+	/* funsies */
+	::selection {background: #44FFB4;}
+	::-moz-selection {background: #44FFB4;}
+
+	/* Table */
+	.ssExample table {min-width: 600px;}
+	.tHeader::after {content: " \2193 \2191 "; font-size: 16px; padding-left: 3px; cursor: pointer;}
+
+	/* Map Popup Style */
+	.leaflet-popup-content h2 {margin-bottom: 4px; margin-top: auto;}
+	
+	body {
+		font-family: 'Source Sans Pro'; font-size: 16px; background: #fff; color: #535353;  border: 1px #47CCFC solid; margin: 0px; padding: 20px 20px 100px 20px; overflow: auto;
+		position:relative;
+		height: 100%; 
+		min-height: 80vh;
+	}
+	
+	#page {
+		display: none;
+		z-index: 1;
+	}
+	
+	#loading {
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 99;
+		bottom: 0;
+		right: 0;
+		background-color: rgba(192, 192, 192, 0.5);
+		background-image: url("./files/ajax-loader.gif");
+		background-repeat: no-repeat;
+		background-position: center;
+	}
+	
+	.channel_content {
+	  //background: rgba(255,255,255,0.9);
+	  width: 30%;
+	  padding: 0px;
+	  position: absolute;
+	  top: -300px;
+	  left: 0;
+	  z-index: 100;
+	  opacity: 0.9;
+	  transition: all 0.5s ease;
+	  padding-left:15px;
+	}
+	
+	#page:hover .channel_content {
+	  //background: rgba(255,255,255,0.9);
+	  top: 0;
+	}
+
+	#page:hover .channel_content a:hover {
+		color: #FF1133;
+	}
+	
+	.vlcframe {
+		width: 40%;
+		margin:0 auto;
+		float: left;
+		height: 300px;
+		max-height: 300px;
+		transition: all 0.5s ease;
+	}
+	
+	.topframe {
+		position:fixed;
+		width: 100%;
+		left: 0;
+		background: rgba(255, 254, 232, 0.9);
+		top: 0px;
+		border-top: 1px #47CCFC solid;
+		border-left: 1px #47CCFC solid;
+		border-right: 1px #47CCFC solid;
+		max-height: 300px;
+		height: 300px;
+		transition: all 0.5s ease;
+	}
+	
+	.vlcplayer {
+		width:460px;
+		margin-left: auto;
+		margin-right: auto;
+		display: block;
+		max-height: 300px;
+		height: 250px;
+		transition: all 0.5s ease;
+	}
+	
+	#vlc {
+		height: 250px;
+		width: 460px;
+		transition: all 0.5s ease;
+	}
+	
+	table {
+		width: 100%;
+	}
+	
+	#page:hover .topframe {
+		max-height: 235px;
+		height: 215px;
+	}
+	#page:hover .vlcframe {
+		max-height: 235px;
+		height: 215px;
+	}
+	#page:hover .vlcplayer {
+		max-height: 235px;
+		height: 215px;
+		width:400px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	#page:hover #vlc {
+		height: 215px;
+		width: 400px;
+	}
+	
+	#tlkiochat {
+		z-index: 100;
+		width: 300px;
+		height: 400px;
+		position: fixed;
+	  bottom: -350px;
+	  right: 2px;
+	}
+	
+	.chatbox {
+	  //background: rgba(255,255,255,0.25);
+	  width: 300px;
+	  height: 400px;
+	  position: fixed;
+	  bottom: -350px;
+	  right: 2px;
+	  z-index: 100;
+	  opacity: 0.25;
+	  transition: all 1.5s ease;
+	  //padding-right:2px;
+	  background: #FFF;
+	}
+	
+	#tlkiochat:hover .chatbox {
+	  //background: rgba(255,255,255,1);
+	  bottom: 0px;
+	  opacity: 1;
+	  //padding-right:2px;
+	}
+	
+	#dimmer
+	{
+		background:#000;
+		opacity:0.5;
+		position:fixed; /* important to use fixed, not absolute */
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+		display:none;
+		z-index:9999; /* may not be necessary */
+	}
+	
+	#dimmer:hover .channel_content {
+	  //background: rgba(255,255,255,0.9);
+	  top: 0;
+	}
+  </style>
+</head>
+<body>
+<div id="page">
+	<div class="topframe">
+		<!-- https://wiki.videolan.org/Documentation:WebPlugin/ -->
+		<div id="lefttopframe" style="float:left; width:30%;">
+			<div id="channel_content" class="channel_content">
+				<strong id="ch_title">Channel:</strong> <span id="ch_status">(Idle)</span><br>
+				<span id="ch_logo"><img width="25" src="http://docs.mybb.com/assets/images/1.6/e/ea/Smilie_exclamation.gif"></span><br/>
+				<span id="ch_summary">Not Playing</span><br/>
+			</div>
+			
+			<div style="padding-left:15px; padding-top:180px;"><input id="fullTableFilter" type="text" placeholder="filter by.."></input></div>
+		</div>
+		<div class="vlcframe">
+			<object class="vlcplayer">
+			  <embed name="wmode" value="transparent"
+				type="application/x-vlc-plugin" 
+				pluginspage="http://www.videolan.org" 
+				version="VideoLAN.VLCPlugin.2"
+				height="250"
+				width="400"
+				id="vlc">
+			  </embed>
+			</object>
+			<input id="vlclink" type="text" placeholder="vlc stream url"></input> <button type="button" onclick='javascript:playVlcUrl();'>Play</button>
+		</div>
+		<div style="right:1px; float:right; position:absolute; width:30%; border-right: 1px #47CCFC solid;  top:0;bottom:0;">
+			<span style="width:100%; height:200px; float:right;"><span id="serverstats" style="float:right; padding-right:26px; text-align: right;">Server Stats: </span></span>
+			<span style="width:100%; float:right; "><span style="float:right; padding-right:26px; text-align: right;">Server Time: <span id="time"></span></span></span>
+		</div>
+	</div>
+
+  <div class="container">
+	<div id="fullTable"></div>
+  </div>
+
+<script id="fullTable_template" type="text/html">
+  <table>
+    <tr>
+		<th></th>
+		<th class="tHeader">Index</th>
+		<th class="tHeader">ChannelName</th>
+		<th class="tHeader">Category</th>
+		<th class="tHeader">Language</th>
+		<th class="tHeader">Country</th>
+		<th class="tHeader">Added</th>
+		<th class="tHeader">Team</th>
+		<th class="tHeader">Status</th>
+		<th class="tHeader">VerifiedOn</th>
+	</tr>
+      {{#rows}}
+		<tr>
+			<td onclick='javascript:playChNoVLC(""+"{{index}}");' href='#{{index}}'><img class="photo" title="{{channelname}}" src="{{channellogo}}" alt="Logo"></td>
+			<td onclick='javascript:playChNoVLC(""+"{{index}}");' href='#{{index}}'><a name="{{index}}"></a>{{index}}</td>
+			<td onclick='javascript:playChNoVLC(""+"{{index}}");' href='#{{index}}'><a name="{{index}}"></a>{{channelname}}</td>
+			<td onclick='javascript:playChNoVLC(""+"{{index}}");' href='#{{index}}' style="background-color: {{categorycolor}};">{{category}}</td>
+			<td onclick='javascript:playChNoVLC(""+"{{index}}");' href='#{{index}}'><a name="{{index}}"></a>{{language}}</td>
+			<td onclick='javascript:playChNoVLC(""+"{{index}}");' href='#{{index}}'><a name="{{index}}"></a>{{country}}</td>
+			<td onclick='javascript:playChNoVLC(""+"{{index}}");' href='#{{index}}'><a name="{{index}}"></a>{{added}}</td>
+			<td onclick='javascript:playChNoVLC(""+"{{index}}");' href='#{{index}}'><a name="{{index}}"></a>{{team}}</td>
+			<td><span style="padding: 2px 2px 2px 2px; background-color: {{statuscolor}}; cursor: {{statuscursor}};" onclick='javascript:submit(""+"{{index}}");' href='#{{index}}'>{{status}}</span></td>
+			<td onclick='javascript:verify(""+"{{index}}");' href='#{{index}}'><span style="cursor: cell;">{{verifiedon}}</span></td>
+		</tr>
+      {{/rows}}
+  </table>
+</script>
+
+<script src='./files/m.js'></script>
+</div>
+
+<div id="tlkiochat">
+<div class="chatbox" >
+<div id="tlkio" data-channel="ccloud" style="height:400px;width:300px;"></div><script async src="http://tlk.io/embed.js" type="text/javascript"></script>
+</div>
+</div>
+<div id="dimmer"></div>
+<div id="loading"></div>
+<div id="dataj"></div>
+<iframe id="noload" src="http://www.google.com/cCloudTV" style="display:none;position:fixed;width:90%;height:90%;margin-left:auto;margin-right:auto;"></iframe>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<html lang="en">
+<head>
+	<meta name="robots" content="noindex">
+<meta name="googlebot" content="noindex" />
+	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer" />
+<title>cCloud TV BETA</title>
+	 <link rel="stylesheet" href="/stuff/style/clouddvrtest2.css" media="screen" type="text/css" />
+
+	<link href="/files/video-js.css" rel="stylesheet" type="text/css">
+       <script src="/chv6/FLASH/video.dev.js"></script>
+	 <script src="stuff/script/cloud.js"></script>
+	 <!-- Media Sources plugin -->
+	<script src="/files/videojs-media-sources.js"></script>
+
+	<!-- HLS plugin -->
+	<script src="/files/videojs-hls.js"></script>
+	<!-- Unless using the CDN hosted version, update the URL to the Flash SWF -->
+<script>
+videojs.options.flash.swf = "/files/video-js.swf";
+</script>
+<script src="stuff/script/cloud2.js"></script>
+</head>
+
+<body>
+<div class="table-title">
+	<video id="ccloudplayer" class="video-js vjs-default-skin" width="100%" height="420px" controls preload="" poster="" data-setup='{"techOrder": ["flash"], "controls": true, "autoplay": true, "preload": "auto"}'>
+					<source src="https://archive.org/download/cCloud_20151126/cCloud.mp4" type='video/mp4' />
+					<p class="vjs-no-js">
+					To view this video please enable JavaScript, and consider upgrading to a web browser
+					that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+					</p>
+				</video>
+<script type="text/javascript">
+function userSubmit() {
+   loadStream(document.getElementById('userInput').value);
+   document.getElementById("userInput").value = "";
+}
+function loadStream(url) {
+var $vid_obj = vjs("ccloudplayer");
+    $vid_obj.src(url);
+    $vid_obj.on('loadstart',function(){
+        $vid_obj.play();
+    });
+}
+</script>
+
+</body>
+
+<table class="table-fill">
+<thead>
+<thead>
+<tr>
+<th class="text-left"><input type='search' id="userInput" placeholder='Paste link here' autofocus></th>
+</tr>
+<tbody class="table-hover">
+<tr>
+<td style="cursor: pointer;" onclick="userSubmit()" class="text-center">Stream</td>
+</tr>
+</tbody>
+</table>
+  
+
+
+  </body>

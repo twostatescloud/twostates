@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html data-cast-api-enabled="true">
+  <head>
+    <meta charset='utf-8'>
+    <title>cCloud TV BETA V0.7 | Social IPTV Service for LIVE TV,Movies,TV Shows & Radio</title>
+	<meta name="keywords" content="cCloud, TV, Popcorn Time, Live TV, Simple IPTV, Free TV, Android, iOS, app, web,Roku, Amazon fire tv, Plex, Chromecast,Airplay,Cast,Cloud player">
+	<meta name="description" content="Official cCloud TV The Popcorn Time for Live TV">
+	<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name='viewport' content='width=device-width, initial-scale=1.0'/>
+    	<meta name="referrer" content="no-referrer" />
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<link rel="icon" type="image/png" href="http://i.imgur.com/yX8CKx3.png">
+	<link rel="shortcut icon" href="http://i.imgur.com/yX8CKx3.png">
+	<link rel="apple-touch-icon" href="http://i.imgur.com/sOo4XTx.png">
+	<link rel="icon" sizes="192x192" href="http://i.imgur.com/5XTKWab.png">
+        <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,900,400italic|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
+    
+    <script type='text/javascript' src='/files/t.js'></script>
+    <script type='text/javascript' src='/files/s.js'></script>
+	<script>
+		function dim(bool)
+		{
+			if (typeof bool=='undefined') bool=true; // so you can shorten dim(true) to dim()
+			document.getElementById('dimmer').style.display=(bool?'block':'none');
+		} 
+	</script>
+	<!-- Change URLs to wherever Video.js files will be hosted -->
+	<link href="/files/video-js.css" rel="stylesheet" type="text/css">
+	<link href="/chv6/FLASH/videojs.chromecast.css" rel="stylesheet" type="text/css">
+	
+	<!-- video.js must be in the <head> for older IEs to work. -->
+	<!-- javascripts -->
+	<script src="http://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
+	<script src="/chv6/FLASH/video.dev.js"></script>
+	<script src="/chv6/FLASH/videojs.chromecast.js"></script>
+
+	<!-- Media Sources plugin -->
+	<script src="/files/videojs-media-sources.js"></script>
+
+	<!-- HLS plugin -->
+	<script src="/files/videojs-hls.js"></script>
+
+	<!-- Unless using the CDN hosted version, update the URL to the Flash SWF -->
+	<script>
+		videojs.options.flash.swf = "/files/video-js.swf";
+	</script>
+	
+	<link href="/files/style/dark/html5m.css" rel="stylesheet">
+	<link href="/files/style/tvguide_preview.css" rel="stylesheet">
+	
+</head>
+<body>
+<div id="page">
+	<div class="topframe">
+		<div class="vlcframe">
+				<video id="example_video_1" class="video-js vjs-default-skin" width="310" height="175" controls preload="" poster="" data-setup='{"techOrder": ["html5"], "controls": true, "autoplay": true, "preload": "auto"}'>
+					<source src="" type='video/mp4' />
+					<p class="vjs-no-js">
+					To view this video please enable JavaScript, and consider upgrading to a web browser
+					that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+					</p>
+				</video>
+				<script>
+				document.addEventListener("DOMContentLoaded", function() {
+				  videojs("example_video_1", {
+					plugins: {
+					  chromecast: {
+						appId: undefined,
+						metadata: {
+						  title: "cCloudTv",
+						  subtitle: "Casting :)"
+						}
+					  }
+					}
+				  });
+				});
+				</script>
+		</div>
+	</div>
+	<div class="topframe2">
+		<div style="float:left; width:50%;"><input title="Use category::sports for Sports, language::spanish for Spanish.. (header::value)" id="fullTableFilter" type="text" placeholder="Search.." list="optkeys"></input>
+			<datalist id="optkeys">
+			 <option value="Language::English">
+			 <option value="Country::US">
+			 <option value="Category::News">
+			 <option value="Category::Sports">
+			 <option value="Added::Today">
+			 <option value="Added::SinceYesterday">
+			 <option value="Added::SinceLast7Days">
+			 <option value="Status::Online">
+			</datalist>
+</div>
+		<div style="right:1px;position:absolute; width:50%;">
+				<span style="width:100%; float:right;"><span style="padding-left:1px; padding-right:3px;">Adult ? <input type="checkbox" id="adultCheckbox" onclick="myFunctionAdult()"></span><span id="serverstats2" style="float:right; padding-right:1px; text-align: right;">Server Stats: </span></span>
+				<span style="width:100%; float:right;position: absolute;"><span style="float:right; text-align: right;"> <span style="display:none;"id="time"></span></span></span>
+		</div>
+	</div>
+
+  <div class="container2">
+    <div id="fullTable"></div>
+  </div>
+
+<script id="fullTable_template" type="text/html">
+  <table>
+    <tr>
+		<th></th>
+		<th></th>
+		<th class="tHeader">ChannelName</th>
+		<th class="tHeader">Category</th>
+		<th class="tHeader">Status</th>
+		<th class="tHeader">Added</th>
+		<th class="tHeader">VerifiedOn</th>
+	</tr>
+      {{#rows}}
+		<tr>
+		        <td><img class="photofavs" src="{{fav1}}" title="{{fav2}}" onclick="{{fav3}}"></td>
+		        <td><a name="ch{{index}}"></a><img class="photo" title="{{channelname}}" src="{{channellogo}}" alt="Logo"  onclick='javascript:playChNoFlash(""+"{{index}}");' href='#{{index}}'><span id="{{guidelinkhover}}" title="{{guidetooltip}}"><span href="{{epgurlprev}}"><img class="photoepg" src="{{guidelinkimg}}" onclick="{{guidelinkaction}}"></span></span></td>
+			<td onclick='javascript:playChNoFlash(""+"{{index}}");' href='#{{index}}'><a name="{{index}}"></a>{{index}} : {{channelname}} ({{language}}) ({{country}})</td>
+			<td onclick='javascript:playChNoFlash(""+"{{index}}");' href='#{{index}}' class="{{categoryclass}}">{{category}}</td>
+			<td><span class="{{statusclass}}" onclick='javascript:submit(""+"{{index}}");' href='#{{index}}'>{{status}}</span></td>
+			<td onclick='javascript:verify(""+"{{index}}");' href='#{{index}}'>{{added}}</td>
+			<td onclick='javascript:verify(""+"{{index}}");' href='#{{index}}'><span style="cursor: cell;">{{verifiedon}}</span></td>
+		</tr>
+      {{/rows}}
+  </table>
+</script>
+
+<script src='/files/m.js'></script>
+<script src='/files/ga.js'></script>
+<script src='/files/delay.js'></script>
+</div>
+
+<div id="dimmer"></div>
+<div class="loader" id="loading">Loading</div>
+<div id="dataj"></div>
+<iframe id="noload" src="/error" style="display:none;position:fixed;width:90%;height:90%;margin-left:auto;margin-right:auto;"></iframe>
+<footer>
+		<div id="footerdelay" class="footer-content">
+		    <nav class="footer-nav">
+		        <div class="footer-links">
+		           		            <a href="/dmca" target="_blank">DMCA</a>
+		        		        </div>
+		    </nav>
+			<a href="/">©cCloud</a></p>
+		 
+		   
+	    </div>
+	</footer>
+</body>
+</html>
